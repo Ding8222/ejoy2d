@@ -23,13 +23,14 @@ struct anchor_data {
 
 struct sprite {
 	struct sprite * parent;
+	struct sprite_pack * pack;
 	uint16_t type;
 	uint16_t id;
 	struct sprite_trans t;
 	union {
 		struct pack_animation *ani;
 		struct pack_picture *pic;
-		struct pack_polygon *poly;
+		struct pack_polygon_data *poly;
 		struct pack_label *label;
 		struct pack_pannel *pannel;
 		struct matrix *mat;
@@ -50,8 +51,9 @@ struct sprite {
 };
 
 struct sprite_trans * sprite_trans_mul(struct sprite_trans *a, struct sprite_trans *b, struct sprite_trans *t, struct matrix *tmp_matrix);
+struct sprite_trans * sprite_trans_mul2(struct sprite_pack *pack, struct sprite_trans_data *a, struct sprite_trans *b, struct sprite_trans *t, struct matrix *tmp_matrix);
 void sprite_drawquad(struct pack_picture *picture, const struct srt *srt, const struct sprite_trans *arg);
-void sprite_drawpolygon(struct pack_polygon *poly, const struct srt *srt, const struct sprite_trans *arg);
+void sprite_drawpolygon(struct sprite_pack *pack, struct pack_polygon_data *poly, const struct srt *srt, const struct sprite_trans *arg);
 
 // sprite_size must be call before sprite_init
 int sprite_size(struct sprite_pack *pack, int id);
@@ -79,7 +81,7 @@ int sprite_pos(struct sprite *s, struct srt *srt, struct matrix *m, int pos[2]);
 void sprite_matrix(struct sprite *s, struct matrix *mat);
 
 bool sprite_child_visible(struct sprite *s, const char * childname);
-int sprite_material_size(struct sprite *s);
+int material_size(int program);
 
 int ejoy2d_sprite(lua_State *L);
 

@@ -33,6 +33,7 @@ newlabel(lua_State *L, struct pack_label *label) {
 	// label never has a child
 	struct pack_label * pl = (struct pack_label *)(s+1);
 	*pl = *label;
+	s->pack = NULL;
 	s->s.label = pl;
 	s->t.mat = NULL;
 	s->t.color = 0xffffffff;
@@ -143,17 +144,19 @@ static const char * srt_key[] = {
 	"scale",
 };
 
-
 static void
-update_message(struct sprite * s, struct sprite_pack * pack, int parentid, int componentid, int frame) {
-	struct pack_animation * ani = (struct pack_animation *)pack->data[parentid];
+update_message(struct sprite * s, struct sprite * parent, int componentid, int frame) {
+	struct pack_animation * ani = parent->s.ani;
 	if (frame < 0 || frame >= ani->frame_number) {
 		return;
 	}
-	struct pack_frame pframe = ani->frame[frame];
+	struct pack_frame *pframe = OFFSET_TO_POINTER(struct pack_frame, parent->pack, ani->frame);
+	pframe = &pframe[frame];
 	int i = 0;
-	for (; i < pframe.n; i++) {
-		if (pframe.part[i].component_id == componentid && pframe.part[i].touchable) {
+	for (; i < pframe->n; i++) {
+		struct pack_part * pp = OFFSET_TO_POINTER(struct pack_part, parent->pack, pframe->part);
+		pp = &pp[i];
+		if (pp->component_id == componentid && pp->touchable) {
 			s->flags |= SPRFLAG_MESSAGE;
 			return;
 		}
@@ -165,6 +168,7 @@ newanchor(lua_State *L) {
 	int sz = sizeof(struct sprite) + sizeof(struct anchor_data);
 	struct sprite * s = (struct sprite *)lua_newuserdata(L, sz);
 	s->parent = NULL;
+	s->pack = NULL;
 	s->t.mat = NULL;
 	s->t.color = 0xffffffff;
 	s->t.additive = 0;
@@ -185,13 +189,15 @@ newanchor(lua_State *L) {
 
 static struct sprite *
 newsprite(lua_State *L, struct sprite_pack *pack, int id) {
-	if (id == ANCHOR_ID) {
+	if (id == ANCHOR_ID) { 
+		luaL_checkstack(L, 1, "lua stack overflow");
 		return newanchor(L);
 	}
 	int sz = sprite_size(pack, id);
 	if (sz == 0) {
 		return NULL;
 	}
+	luaL_checkstack(L, 1, "lua stack overflow");
 	struct sprite * s = (struct sprite *)lua_newuserdata(L, sz);
 	sprite_init(s, pack, id, sz);
 	int i;
@@ -200,6 +206,7 @@ newsprite(lua_State *L, struct sprite_pack *pack, int id) {
 		if (childid < 0)
 			break;
 		if (i==0) {
+			luaL_checkstack(L, 2, "lua stack overflow");
 			lua_newtable(L);
 			lua_pushvalue(L,-1);
 			lua_setuservalue(L, -3);	// set uservalue for sprite
@@ -208,7 +215,7 @@ newsprite(lua_State *L, struct sprite_pack *pack, int id) {
 		if (c) {
 			c->name = sprite_childname(s, i);
 			sprite_mount(s, i, c);
-			update_message(c, pack, id, i, s->frame);
+			update_message(c, s, i, s->frame);
 			lua_rawseti(L, -2, i+1);
 		}
 	}
@@ -993,8 +1000,8 @@ lchildren_name(lua_State *L) {
 	int cnt=0;
 	struct pack_animation * ani = s->s.ani;
 	for (i=0;i<ani->component_number;i++) {
-		if (ani->component[i].name != NULL) {
-			lua_pushstring(L, ani->component[i].name);
+		if (ani->component[i].name != 0) {
+			lua_pushstring(L, OFFSET_TO_STRING(s->pack, ani->component[i].name));
 			cnt++;
 		}
 	}
@@ -1377,48 +1384,56 @@ lmethod(lua_State *L) {
 	luaL_setfuncs(L,l2,nk);
 }
 
+struct dummy_pack {
+	struct sprite_pack dummy;
+	char name[8];
+	struct pack_part part;
+	struct pack_frame frame;
+	struct pack_action action;
+	struct pack_animation animation;
+};
+
 static int
 lnewproxy(lua_State *L) {
-	static struct pack_part part = {
-		{
-			NULL,	// mat
-			0xffffffff,	// color
-			0,	// additive
-			PROGRAM_DEFAULT,
-			0,	// _dummy
-		},	// trans
-		0,	// component_id
-		0,	// touchable
-	};
-	static struct pack_frame frame = {
-		&part,
-		1,	// n
-		0,	// _dummy
-	};
-	static struct pack_action action = {
-		NULL,	// name
-		1,	// number
-		0,	// start_frame
-	};
-	static struct pack_animation ani = {
-		&frame,
-		&action,
-		1,	// frame_number
-		1,	// action_number
-		1,	// component_number
-		0,	// _dummy
-		{{
-			"proxy",	// name
-			0,	// id
-			0,	// _dummy
-		}},
+	static struct dummy_pack dp = {
+		{ 0 , 0, 0, { 0, 0 } },	// dummy
+		"proxy", // name
+		{	// part
+			{
+				0,	// mat
+				0xffffffff,	// color
+				0,	// additive
+			},	// trans
+			0,	// component_id
+			0,	// touchable
+		},
+		{	// frame
+			offsetof(struct dummy_pack, part),
+			1,	// n
+		},
+		{	// action
+			0,	// name
+			1,	// number
+			0,	// start_frame
+		},
+		{	// animation
+			offsetof(struct dummy_pack, frame),
+			offsetof(struct dummy_pack, action),
+			1,	// frame_number
+			1,	// action_number
+			1,	// component_number
+			{{
+				offsetof(struct dummy_pack, name),
+				0,	// id
+			}},
+		}
 	};
 	struct sprite * s = (struct sprite *)lua_newuserdata(L, sizeof(struct sprite));
 	lua_newtable(L);
 	lua_setuservalue(L, -2);
-
 	s->parent = NULL;
-	s->s.ani = &ani;
+	s->pack = &dp.dummy;
+	s->s.ani = &dp.animation;
 	s->t.mat = NULL;
 	s->t.color = 0xffffffff;
 	s->t.additive = 0;
@@ -1439,23 +1454,33 @@ lnewproxy(lua_State *L) {
 
 static int
 lnewmaterial(lua_State *L) {
-	struct sprite *s = self(L);
-	int sz = sprite_material_size(s);
-	if (sz == 0)
-		return luaL_error(L, "The program has not material");
-	get_reftable(L, 1);	
+	struct sprite * s = (struct sprite *)lua_touserdata(L, 1);
+	if (s) {
+		int sz = material_size(s->t.program);
+		if (sz == 0)
+			return luaL_error(L, "The program has not material");
+		get_reftable(L, 1);	
 
-	lua_createtable(L, 0, 1);
-	void * m = lua_newuserdata(L, sz); // sprite, uservalue, table, matertial
-	s->material = (struct material*)m;
-	material_init(m, sz, s->t.program);
-	lua_setfield(L, -2, "__obj");
+		lua_createtable(L, 0, 1);
+		void * m = lua_newuserdata(L, sz); // sprite, uservalue, table, matertial
+		s->material = (struct material*)m;
+		material_init(m, sz, s->t.program);
+		lua_setfield(L, -2, "__obj");
 
-	lua_pushvalue(L, -1);	// sprite, uservalue, table, table
-	lua_setfield(L, -3, "material");
-	lua_pushinteger(L, s->t.program);
+		lua_pushvalue(L, -1);	// sprite, uservalue, table, table
+		lua_setfield(L, -3, "material");
+		lua_pushinteger(L, s->t.program);
 
-	return 2;	// return table, program
+		return 2;	// return table, program
+	} else {
+		int program = (int)luaL_checkinteger(L, 1);
+		int sz = material_size(program);
+		if (sz == 0)
+			return luaL_error(L, "The program has not material");
+		struct material *m = (struct material*)lua_newuserdata(L, sz);
+		material_init(m, sz, program);
+		return 1;
+	}
 }
 
 static struct dfont*
@@ -1617,20 +1642,21 @@ ldfont_mothod(lua_State *L) {
  */
 static int
 ldrawtext(lua_State *L) {
-	const char * str = luaL_checkstring(L, 1);
-	float x = luaL_checknumber(L, 2);
-	float y = luaL_checknumber(L, 3);
+	struct material* mat = (struct material*)lua_touserdata(L, 1);
+	const char * str = luaL_checkstring(L, 2);
+	float x = luaL_checknumber(L, 3);
+	float y = luaL_checknumber(L, 4);
 	struct pack_label pl;
-	pl.width = luaL_checkinteger(L, 4);
-	pl.size = luaL_checkinteger(L, 5);
+	pl.width = luaL_checkinteger(L, 5);
+	pl.size = luaL_checkinteger(L, 6);
 	pl.height = pl.size;
-	pl.color = luaL_optinteger(L, 6, 0xffffffff);
+	pl.color = luaL_optinteger(L, 7, 0xffffffff);
 	pl.space_h = 0;
 	pl.space_w = 0;
 	pl.auto_scale = 0;
 	pl.align = LABEL_ALIGN_CENTER;
-	pl.edge = lua_toboolean(L, 7);
-	const char *align = lua_tostring(L, 8);
+	pl.edge = lua_toboolean(L, 8);
+	const char *align = lua_tostring(L, 9);
 	if (align) {
 		switch(align[0]) {
 		case 'l': case 'L' :
@@ -1641,7 +1667,7 @@ ldrawtext(lua_State *L) {
 			break;
 		}
 	}
-	shader_program(pl.edge ? PROGRAM_TEXT_EDGE : PROGRAM_TEXT, NULL);
+	shader_program(pl.edge ? PROGRAM_GUI_EDGE : PROGRAM_GUI_TEXT, mat);
 	label_rawdraw(str, x,y, &pl);
 	return 0;
 }
