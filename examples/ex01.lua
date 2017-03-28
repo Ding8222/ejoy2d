@@ -51,5 +51,3 @@ function game.on_pause()
 end
 
 ej.start(game)
-
-

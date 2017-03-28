@@ -21,6 +21,12 @@
     <Filter Include="lib\src\render">
       <UniqueIdentifier>{190d12fe-25b2-430a-8db5-9ee3abf54a20}</UniqueIdentifier>
     </Filter>
+    <Filter Include="lib\mylib">
+      <UniqueIdentifier>{a1a4c9fa-0400-4594-9475-113c9b3b6841}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib\mylib\lpeg">
+      <UniqueIdentifier>{3ca0dfcb-4fdd-448f-b843-5c357bdd07a5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\mingw\window.c">
@@ -103,6 +109,27 @@
     </ClCompile>
     <ClCompile Include="..\..\..\lib\lgeometry.c">
       <Filter>lib\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\mylib\clib\lsha1.c">
+      <Filter>lib\mylib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\mylib\clib\lua-crypt.c">
+      <Filter>lib\mylib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\mylib\clib\lpeg\lpcap.c">
+      <Filter>lib\mylib\lpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\mylib\clib\lpeg\lpcode.c">
+      <Filter>lib\mylib\lpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\mylib\clib\lpeg\lpprint.c">
+      <Filter>lib\mylib\lpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\mylib\clib\lpeg\lptree.c">
+      <Filter>lib\mylib\lpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\mylib\clib\lpeg\lpvm.c">
+      <Filter>lib\mylib\lpeg</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -201,6 +228,24 @@
     </ClInclude>
     <ClInclude Include="..\..\..\lib\render\render.h">
       <Filter>lib\src\render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\mylib\clib\lpeg\lpcap.h">
+      <Filter>lib\mylib\lpeg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\mylib\clib\lpeg\lpcode.h">
+      <Filter>lib\mylib\lpeg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\mylib\clib\lpeg\lpprint.h">
+      <Filter>lib\mylib\lpeg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\mylib\clib\lpeg\lptree.h">
+      <Filter>lib\mylib\lpeg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\mylib\clib\lpeg\lptypes.h">
+      <Filter>lib\mylib\lpeg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\mylib\clib\lpeg\lpvm.h">
+      <Filter>lib\mylib\lpeg</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

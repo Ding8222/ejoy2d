@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -37,6 +37,13 @@
     <ClCompile Include="..\..\..\mingw\window.c" />
     <ClCompile Include="..\..\..\mingw\winfont.c" />
     <ClCompile Include="..\..\..\mingw\winfw.c" />
+    <ClCompile Include="..\..\..\mylib\clib\lpeg\lpcap.c" />
+    <ClCompile Include="..\..\..\mylib\clib\lpeg\lpcode.c" />
+    <ClCompile Include="..\..\..\mylib\clib\lpeg\lpprint.c" />
+    <ClCompile Include="..\..\..\mylib\clib\lpeg\lptree.c" />
+    <ClCompile Include="..\..\..\mylib\clib\lpeg\lpvm.c" />
+    <ClCompile Include="..\..\..\mylib\clib\lsha1.c" />
+    <ClCompile Include="..\..\..\mylib\clib\lua-crypt.c" />
     <ClCompile Include="..\..\src\ejoy2d\winmain.c" />
   </ItemGroup>
   <ItemGroup>
@@ -67,6 +74,12 @@
     <ClInclude Include="..\..\..\lib\spritepack.h" />
     <ClInclude Include="..\..\..\lib\texture.h" />
     <ClInclude Include="..\..\..\mingw\winfw.h" />
+    <ClInclude Include="..\..\..\mylib\clib\lpeg\lpcap.h" />
+    <ClInclude Include="..\..\..\mylib\clib\lpeg\lpcode.h" />
+    <ClInclude Include="..\..\..\mylib\clib\lpeg\lpprint.h" />
+    <ClInclude Include="..\..\..\mylib\clib\lpeg\lptree.h" />
+    <ClInclude Include="..\..\..\mylib\clib\lpeg\lptypes.h" />
+    <ClInclude Include="..\..\..\mylib\clib\lpeg\lpvm.h" />
     <ClInclude Include="..\..\include\lauxlib.h" />
     <ClInclude Include="..\..\include\lua.h" />
     <ClInclude Include="..\..\include\lualib.h" />
@@ -90,13 +103,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -119,6 +132,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <TargetName>ej2d</TargetName>
+    <IncludePath>E:\ejoy2d\mylib\clib;$(IncludePath)</IncludePath>
+    <LibraryPath>E:\ejoy2d\mylib\clib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -151,13 +166,13 @@
       <AdditionalIncludeDirectories>$(EJOY2D_GLEW);$(EJOY2D)\include\;$(EJOY2D_ROOT)\lib\;$(EJOY2D_ROOT)\lib\render;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(EJOY2D_LIB)</AdditionalLibraryDirectories>
       <OutputFile>$(EJOY2D_ROOT)$(TargetName)$(TargetExt)</OutputFile>
-      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;sproto.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

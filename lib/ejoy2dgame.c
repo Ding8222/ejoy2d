@@ -16,6 +16,20 @@
 #include "particle.h"
 #include "lrenderbuffer.h"
 #include "lgeometry.h"
+#include "sproto.h"
+#include "lpeg/lptypes.h"
+#include "lpeg/lpcap.h"
+#include "lpeg/lpcode.h"
+#include "lpeg/lpprint.h"
+#include "lpeg/lptree.h"
+#include "lpeg/lpvm.h"
+
+extern "C"
+{
+	extern int luaopen_sproto_core(lua_State *L);
+}
+extern int luaopen_lpeg(lua_State *L);
+extern int luaopen_crypt(lua_State *L);
 
 //#define LOGIC_FRAME 30
 
@@ -100,7 +114,7 @@ checkluaversion(lua_State *L) {
 lua_State *
 ejoy2d_lua_init() {
 	lua_State *L = luaL_newstate();
-	
+
 	lua_atpanic(L, _panic);
 	luaL_openlibs(L);
 	return L;
@@ -121,6 +135,9 @@ ejoy2d_init(lua_State *L) {
 	luaL_requiref(L, "ejoy2d.matrix.c", ejoy2d_matrix, 0);
 	luaL_requiref(L, "ejoy2d.particle.c", ejoy2d_particle, 0);
 	luaL_requiref(L, "ejoy2d.geometry.c", ejoy2d_geometry, 0);
+	luaL_requiref(L, "sproto.core", luaopen_sproto_core, 0); 
+	luaL_requiref(L, "lpeg", luaopen_lpeg, 0);
+	luaL_requiref(L, "crypt", luaopen_crypt, 0);
 
 	lua_settop(L,0);
 
@@ -172,12 +189,12 @@ traceback(lua_State *L) {
 	if (msg == NULL) {
 	if (luaL_callmeta(L, 1, "__tostring") &&
 		lua_type(L, -1) == LUA_TSTRING)
-		return 1; 
+		return 1;
 	else
 		msg = lua_pushfstring(L, "(error object is a %s value)",
 								luaL_typename(L, 1));
 	}
-	luaL_traceback(L, L, msg, 1); 
+	luaL_traceback(L, L, msg, 1);
 	return 1;
 }
 
@@ -202,7 +219,7 @@ ejoy2d_game_start(struct game *G) {
 }
 
 
-void 
+void
 ejoy2d_handle_error(lua_State *L, const char *err_type, const char *msg) {
 	lua_getfield(L, LUA_REGISTRYINDEX, EJOY_HANDLE_ERROR);
 	lua_pushstring(L, err_type);
@@ -354,4 +371,3 @@ ejoy2d_game_pause(struct game* G) {
 	call(L, 0, 0);
 	lua_settop(L, TOP_FUNCTION);
 }
-
