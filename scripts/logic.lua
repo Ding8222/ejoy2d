@@ -287,25 +287,29 @@ end
 local readpackage = unpack_f(unpack_package)
 
 function logic.dispatch_message()
-	local str = readpackage()
-	if str ~= nil then
-		local type, id, args, response = host:dispatch(str)
-		if type == "RESPONSE" then
-			local s = assert(session[id])
-			session[id] = nil
-			local f = RESPONSE[s.name]
-			if f then
-				f (s.args, args)
-			else
-				print "response"
+	while true do
+		local str = readpackage()
+		if str ~= nil then
+			local type, id, args, response = host:dispatch(str)
+			if type == "RESPONSE" then
+				local s = assert(session[id])
+				session[id] = nil
+				local f = RESPONSE[s.name]
+				if f then
+					f (s.args, args)
+				else
+					print "response"
+				end
+			elseif type == "REQUEST" then
+				local f = REQUEST[id]
+				if f then
+					f(args)
+				else
+					print "response"
+				end
 			end
-		elseif type == "REQUEST" then
-			local f = REQUEST[id]
-			if f then
-				f(args)
-			else
-				print "response"
-			end
+		else
+			break
 		end
 	end
 end
