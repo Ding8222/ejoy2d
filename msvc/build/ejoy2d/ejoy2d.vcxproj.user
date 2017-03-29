@@ -9,7 +9,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LocalDebuggerCommand>$(EJOY2D_ROOT)$(TargetName)$(TargetExt)</LocalDebuggerCommand>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerCommandArguments>examples/ex01.lua</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>scripts/main.lua</LocalDebuggerCommandArguments>
     <LocalDebuggerWorkingDirectory>$(EJOY2D_ROOT)</LocalDebuggerWorkingDirectory>
   </PropertyGroup>
 </Project>

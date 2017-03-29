@@ -48,7 +48,7 @@ extern int luaopen_crypt(lua_State *L);
 #define DRAWFRAME_FUNCTION 3
 #define TOP_FUNCTION 3
 
-static int LOGIC_FRAME = 30;
+static int LOGIC_FRAME = 60;
 
 static int
 _panic(lua_State *L) {

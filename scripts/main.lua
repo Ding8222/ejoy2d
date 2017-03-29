@@ -24,14 +24,14 @@ function logic.REQUEST.characterupdate(args)
 	if temp then
 		--对象存在
 		temp:ps(args.info.pos.x,args.info.pos.y)
-		temp.label.text = string.format(args.info.name.."\n[%d,%d]", args.info.pos.x,args.info.pos.y)
+		temp.label.text = string.format(args.info.name.."\n"..args.info.tempid.."\n[%d,%d]", args.info.pos.x,args.info.pos.y)
 	else
 		--对象不存在
 		other[args.info.tempid] = ej.sprite("sample","mine")
 		other[args.info.tempid].resource.frame = 70
 		other[args.info.tempid]:ps(args.info.pos.x,args.info.pos.y)
 		other[args.info.tempid]:ps(1.2)
-		other[args.info.tempid].label.text = string.format(args.info.name.."\n[%d,%d]", args.info.pos.x,args.info.pos.y)
+		other[args.info.tempid].label.text = string.format(args.info.name.."\n"..args.info.tempid.."\n[%d,%d]", args.info.pos.x,args.info.pos.y)
 	end
 end
 
