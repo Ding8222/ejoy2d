@@ -27,6 +27,9 @@
     <Filter Include="lib\mylib\lpeg">
       <UniqueIdentifier>{3ca0dfcb-4fdd-448f-b843-5c357bdd07a5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="lib\mylib\sproto">
+      <UniqueIdentifier>{5db3dd85-b6f6-4dd4-ac6d-eb0167bd1e86}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\mingw\window.c">
@@ -130,6 +133,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\mylib\clib\lpeg\lpvm.c">
       <Filter>lib\mylib\lpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\mylib\clib\sproto\lsproto.c">
+      <Filter>lib\mylib\sproto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\mylib\clib\sproto\sproto.c">
+      <Filter>lib\mylib\sproto</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -246,6 +255,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\mylib\clib\lpeg\lpvm.h">
       <Filter>lib\mylib\lpeg</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\mylib\clib\sproto\msvcint.h">
+      <Filter>lib\mylib\sproto</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\mylib\clib\sproto\sproto.h">
+      <Filter>lib\mylib\sproto</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

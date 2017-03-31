@@ -44,6 +44,8 @@
     <ClCompile Include="..\..\..\mylib\clib\lpeg\lpvm.c" />
     <ClCompile Include="..\..\..\mylib\clib\lsha1.c" />
     <ClCompile Include="..\..\..\mylib\clib\lua-crypt.c" />
+    <ClCompile Include="..\..\..\mylib\clib\sproto\lsproto.c" />
+    <ClCompile Include="..\..\..\mylib\clib\sproto\sproto.c" />
     <ClCompile Include="..\..\src\ejoy2d\winmain.c" />
   </ItemGroup>
   <ItemGroup>
@@ -80,6 +82,8 @@
     <ClInclude Include="..\..\..\mylib\clib\lpeg\lptree.h" />
     <ClInclude Include="..\..\..\mylib\clib\lpeg\lptypes.h" />
     <ClInclude Include="..\..\..\mylib\clib\lpeg\lpvm.h" />
+    <ClInclude Include="..\..\..\mylib\clib\sproto\msvcint.h" />
+    <ClInclude Include="..\..\..\mylib\clib\sproto\sproto.h" />
     <ClInclude Include="..\..\include\lauxlib.h" />
     <ClInclude Include="..\..\include\lua.h" />
     <ClInclude Include="..\..\include\lualib.h" />
@@ -132,7 +136,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <TargetName>ej2d</TargetName>
-    <LibraryPath>$(EJOY2D_ROOT)\mylib\clib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -171,7 +174,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(EJOY2D_LIB)</AdditionalLibraryDirectories>
       <OutputFile>$(EJOY2D_ROOT)$(TargetName)$(TargetExt)</OutputFile>
-      <AdditionalDependencies>opengl32.lib;sproto.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

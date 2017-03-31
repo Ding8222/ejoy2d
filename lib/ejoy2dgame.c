@@ -16,7 +16,7 @@
 #include "particle.h"
 #include "lrenderbuffer.h"
 #include "lgeometry.h"
-#include "sproto.h"
+#include "sproto/sproto.h"
 #include "lpeg/lptypes.h"
 #include "lpeg/lpcap.h"
 #include "lpeg/lpcode.h"
@@ -24,10 +24,7 @@
 #include "lpeg/lptree.h"
 #include "lpeg/lpvm.h"
 
-extern "C"
-{
-	extern int luaopen_sproto_core(lua_State *L);
-}
+extern int luaopen_sproto_core(lua_State *L);
 extern int luaopen_lpeg(lua_State *L);
 extern int luaopen_crypt(lua_State *L);
 
