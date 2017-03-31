@@ -27,6 +27,7 @@
 extern int luaopen_sproto_core(lua_State *L);
 extern int luaopen_lpeg(lua_State *L);
 extern int luaopen_crypt(lua_State *L);
+extern int luaopen_socket_core(lua_State *L);
 
 //#define LOGIC_FRAME 30
 
@@ -135,6 +136,7 @@ ejoy2d_init(lua_State *L) {
 	luaL_requiref(L, "sproto.core", luaopen_sproto_core, 0); 
 	luaL_requiref(L, "lpeg", luaopen_lpeg, 0);
 	luaL_requiref(L, "crypt", luaopen_crypt, 0);
+	luaL_requiref(L, "socket.core", luaopen_socket_core, 0);
 
 	lua_settop(L,0);
 

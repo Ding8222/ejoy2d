@@ -30,6 +30,9 @@
     <Filter Include="lib\mylib\sproto">
       <UniqueIdentifier>{5db3dd85-b6f6-4dd4-ac6d-eb0167bd1e86}</UniqueIdentifier>
     </Filter>
+    <Filter Include="lib\mylib\luasocket">
+      <UniqueIdentifier>{323d28cd-46c7-4d34-adc7-526a9935640f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\mingw\window.c">
@@ -139,6 +142,48 @@
     </ClCompile>
     <ClCompile Include="..\..\..\mylib\clib\sproto\sproto.c">
       <Filter>lib\mylib\sproto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\mylib\clib\luasocket\auxiliar.c">
+      <Filter>lib\mylib\luasocket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\mylib\clib\luasocket\buffer.c">
+      <Filter>lib\mylib\luasocket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\mylib\clib\luasocket\compat.c">
+      <Filter>lib\mylib\luasocket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\mylib\clib\luasocket\except.c">
+      <Filter>lib\mylib\luasocket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\mylib\clib\luasocket\inet.c">
+      <Filter>lib\mylib\luasocket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\mylib\clib\luasocket\io.c">
+      <Filter>lib\mylib\luasocket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\mylib\clib\luasocket\luasocket.c">
+      <Filter>lib\mylib\luasocket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\mylib\clib\luasocket\mime.c">
+      <Filter>lib\mylib\luasocket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\mylib\clib\luasocket\options.c">
+      <Filter>lib\mylib\luasocket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\mylib\clib\luasocket\select.c">
+      <Filter>lib\mylib\luasocket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\mylib\clib\luasocket\tcp.c">
+      <Filter>lib\mylib\luasocket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\mylib\clib\luasocket\timeout.c">
+      <Filter>lib\mylib\luasocket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\mylib\clib\luasocket\udp.c">
+      <Filter>lib\mylib\luasocket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\mylib\clib\luasocket\wsocket.c">
+      <Filter>lib\mylib\luasocket</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -261,6 +306,54 @@
     </ClInclude>
     <ClInclude Include="..\..\..\mylib\clib\sproto\sproto.h">
       <Filter>lib\mylib\sproto</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\mylib\clib\luasocket\auxiliar.h">
+      <Filter>lib\mylib\luasocket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\mylib\clib\luasocket\buffer.h">
+      <Filter>lib\mylib\luasocket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\mylib\clib\luasocket\compat.h">
+      <Filter>lib\mylib\luasocket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\mylib\clib\luasocket\except.h">
+      <Filter>lib\mylib\luasocket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\mylib\clib\luasocket\inet.h">
+      <Filter>lib\mylib\luasocket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\mylib\clib\luasocket\io.h">
+      <Filter>lib\mylib\luasocket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\mylib\clib\luasocket\luasocket.h">
+      <Filter>lib\mylib\luasocket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\mylib\clib\luasocket\mime.h">
+      <Filter>lib\mylib\luasocket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\mylib\clib\luasocket\options.h">
+      <Filter>lib\mylib\luasocket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\mylib\clib\luasocket\pierror.h">
+      <Filter>lib\mylib\luasocket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\mylib\clib\luasocket\select.h">
+      <Filter>lib\mylib\luasocket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\mylib\clib\luasocket\socket.h">
+      <Filter>lib\mylib\luasocket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\mylib\clib\luasocket\tcp.h">
+      <Filter>lib\mylib\luasocket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\mylib\clib\luasocket\timeout.h">
+      <Filter>lib\mylib\luasocket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\mylib\clib\luasocket\udp.h">
+      <Filter>lib\mylib\luasocket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\mylib\clib\luasocket\wsocket.h">
+      <Filter>lib\mylib\luasocket</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
