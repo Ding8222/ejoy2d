@@ -48,11 +48,16 @@ assert(tcp:settimeout(0))
 local session = {}
 local session_id = 0
 
+local nIndex = 0
 local function send_request(name, args)
 	session_id = session_id + 1
+	nIndex = nIndex + 1
+	if nIndex > 255 then
+		nIndex = 1
+	end
 	local str = request(name, args, session_id)
-	local size = #str + 4
-	local package = string.pack(">I2", size)..str..string.pack(">I4", session_id)
+	local size = #str + 5
+	local package = string.pack(">I2", size)..str..string.pack(">BI4", nIndex, session_id)
 	tcp:send(package)
 	session[session_id] = {name = name ,args = args}
 end
@@ -237,6 +242,16 @@ function REQUEST.heartbeat()
 	print("===heartbeat===")
 end
 
+function REQUEST.delaytest(args)
+	print("delaytest:"..args.time)
+	--print(args)
+	return {time = args.time}
+end
+
+function REQUEST.delayresult(args)
+	print("delayresult:"..args.time)
+end
+
 local function unpack_package(text)
 	local size = #text
 	if size < 2 then
@@ -246,7 +261,7 @@ local function unpack_package(text)
 	if size < s+2 then
 		return nil, text
 	end
-	return text:sub(3,2+s - 4), text:sub(3+s)
+	return text:sub(3,2+s), text:sub(3+s)
 end
 
 local last = ""
@@ -286,12 +301,21 @@ end
 
 local readpackage = unpack_f(unpack_package)
 
+local function recv_response(v)
+	local size = #v - 5
+	local content, ok, session = string.unpack("c"..tostring(size).."B>I4", v)
+	return ok ~=0 , content, session
+end
+
 function logic.dispatch_message()
 	while true do
 		local str = readpackage()
 		if str ~= nil then
-			local type, id, args, response = host:dispatch(str)
+			local ok , content, sessionid = recv_response(str)
+			assert(ok)
+			local type, id, args, response = host:dispatch(content)
 			if type == "RESPONSE" then
+				assert(id == sessionid,"session err! id:"..id.." session:"..sessionid)
 				local s = assert(session[id])
 				session[id] = nil
 				local f = RESPONSE[s.name]
@@ -303,7 +327,17 @@ function logic.dispatch_message()
 			elseif type == "REQUEST" then
 				local f = REQUEST[id]
 				if f then
-					f(args)
+					local r = f(args)
+					if r and response then
+						local str = response(r)
+						local size = #str + 5
+						nIndex = nIndex + 1
+						if nIndex > 255 then
+							nIndex = 1
+						end
+						local package = string.pack(">I2", size)..str..string.pack(">BI4", nIndex, sessionid)
+						tcp:send(package)
+					end
 				else
 					print "response"
 				end

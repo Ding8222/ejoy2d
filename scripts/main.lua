@@ -46,7 +46,7 @@ function logic.RESPONSE:moveto(args)
 end
 
 local function moveto(x,y)
-	--print("send moveto：",x,y)
+	print("send moveto:",x,y)
 	local pos = {
 		x = x,
 		y = y,
