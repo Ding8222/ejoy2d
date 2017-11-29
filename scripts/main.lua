@@ -36,8 +36,20 @@ function logic.REQUEST.characterupdate(args)
 end
 
 function logic.REQUEST.characterleave(args)
-	--print("characterleave:")
-	other[args.tempid] = nil
+	for _,v in pairs(args) do
+		for _,vv in pairs(v) do
+			other[vv] = nil
+		end
+	end
+end
+
+function logic.REQUEST.moveto(args)
+	local move = args.move
+	for _,v in pairs(move) do
+		if other[v.tempid] then
+			other[v.tempid]:ps(v.pos.x,v.pos.y)
+		end
+	end
 end
 
 function logic.RESPONSE:moveto(args)
@@ -103,8 +115,10 @@ function getIntPart(x)
 end
 
 function game.touch(what, x, y)
-	label.label.text = string.format("%s\n[%d,%d]", what, (x - 512), (y - 384))
-	moveto((x - 512), (y - 384))
+	if what ~= "END" then
+		label.label.text = string.format("%s\n[%d,%d]", what, (x - 512), (y - 384))
+		moveto((x - 512), (y - 384))
+	end
 end
 
 function game.message(...)
