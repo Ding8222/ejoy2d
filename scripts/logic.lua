@@ -6,6 +6,11 @@ require"mylib.lualib.luaext"
 
 local logic = {}
 
+local testip = "127.0.0.1"
+--local testip = "47.52.138.32"
+local loginserverip = testip
+local gameserverip = testip
+
 ------------加载解析proto文件--------------
 local f = io.open("./mylib/proto/clientproto.lua")
 
@@ -41,7 +46,7 @@ end
 
 tcp = assert(socket.tcp())
 
-assert(tcp:connect("127.0.0.1", 8101))
+assert(tcp:connect(loginserverip, 8101))
 
 assert(tcp:settimeout(0))
 
@@ -112,7 +117,7 @@ local index = 1
 local function login()
 	--连接到gameserver
 	tcp = assert(socket.tcp())
-	assert(tcp:connect("127.0.0.1", 8547))
+	assert(tcp:connect(gameserverip, 8547))
 	tcp:settimeout(0)
 	local handshake = string.format("%s@%s#%s:%d", crypt.base64encode(token.user), crypt.base64encode(token.server),crypt.base64encode(subid) , index)
 	local hmac = crypt.hmac64(crypt.hashkey(handshake), secret)
@@ -278,7 +283,7 @@ local function unpack_f(f)
 			return nil, last
 		else
 			local size = r:byte(1) * 256 + r:byte(2)
-			r = r..tcp:receive(size)
+				r = r..tcp:receive(size)
 		end
 		if r == "" then
 			error "Server closed"
