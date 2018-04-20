@@ -1,17 +1,13 @@
-local crypt = require"crypt"
-local test = require"mylib.lualib.test"
 local ej = require "ejoy2d"
 local fw = require "ejoy2d.framework"
 local pack = require "ejoy2d.simplepackage"
-local logic = require "scripts.logic"
+local logic = require "scripts2.logic"
+local crypt = require"crypt"
+
 local send_request = logic.send_request
 
 logic.user = "hello"
 logic.name = "ding"
-
-local clientkey = crypt.randomkey()
-logic.set_clientkey(clientkey)
-send_request("handshake",{clientkey = crypt.base64encode(crypt.dhexchange(clientkey))})
 
 local label
 local me
@@ -19,53 +15,21 @@ local other = {}
 local game = {}
 local screencoord = { x = 512, y = 384, scale = 1.0 }
 
-function logic.REQUEST.characterupdate(args)
-	--print("characterupdate:")
-	local temp = other[args.info.tempid]
-	if temp then
-		--对象存在
-		temp:ps(args.info.pos.x,args.info.pos.y)
-		temp.label.text = string.format(args.info.name.."\n"..args.info.tempid.."\n[%d,%d]", args.info.pos.x,args.info.pos.y)
+function logic.RESPONSE.PlayerMoveRet(args)
+	if args.nTempID == logic.nTempID then
+		me:ps(args.x,args.y)
 	else
-		--对象不存在
-		other[args.info.tempid] = ej.sprite("sample","mine")
-		other[args.info.tempid].resource.frame = 70
-		other[args.info.tempid]:ps(args.info.pos.x,args.info.pos.y)
-		other[args.info.tempid]:ps(1.2)
-		other[args.info.tempid].label.text = string.format(args.info.name.."\n"..args.info.tempid.."\n[%d,%d]", args.info.pos.x,args.info.pos.y)
+		--other[args.nTempID]:ps(args.x,args.y)
 	end
-end
-
-function logic.REQUEST.characterleave(args)
-	for _,v in pairs(args) do
-		for _,vv in pairs(v) do
-			other[vv] = nil
-		end
-	end
-end
-
-function logic.REQUEST.moveto(args)
-	local move = args.move
-	for _,v in pairs(move) do
-		if other[v.tempid] then
-			other[v.tempid]:ps(v.pos.x,v.pos.y)
-		end
-	end
-end
-
-function logic.RESPONSE:moveto(args)
-	me:ps(args.pos.x,args.pos.y)
-	--quitgame()
 end
 
 local function moveto(x,y)
-	print("send moveto:",x,y)
-	local pos = {
+	local PlayerMove = {
 		x = x,
 		y = y,
-		z = 0,
+		z = 1,
 	}
-	send_request("moveto",{ pos = pos })
+	send_request(PlayerMove,3,3)
 end
 
 pack.load {

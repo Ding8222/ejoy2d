@@ -33,6 +33,9 @@
     <Filter Include="lib\mylib\luasocket">
       <UniqueIdentifier>{323d28cd-46c7-4d34-adc7-526a9935640f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="lib\mylib\lua-protobuf">
+      <UniqueIdentifier>{e8b4ad15-db7d-43b6-b903-a850880c2cfa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\mingw\window.c">
@@ -184,6 +187,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\mylib\clib\luasocket\wsocket.c">
       <Filter>lib\mylib\luasocket</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\mylib\clib\lua-protobuf\pb.c">
+      <Filter>lib\mylib\lua-protobuf</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -354,6 +360,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\mylib\clib\luasocket\wsocket.h">
       <Filter>lib\mylib\luasocket</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\mylib\clib\lua-protobuf\pb.h">
+      <Filter>lib\mylib\lua-protobuf</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

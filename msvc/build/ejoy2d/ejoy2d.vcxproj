@@ -44,6 +44,7 @@
     <ClCompile Include="..\..\..\mylib\clib\lpeg\lpvm.c" />
     <ClCompile Include="..\..\..\mylib\clib\lsha1.c" />
     <ClCompile Include="..\..\..\mylib\clib\lua-crypt.c" />
+    <ClCompile Include="..\..\..\mylib\clib\lua-protobuf\pb.c" />
     <ClCompile Include="..\..\..\mylib\clib\luasocket\auxiliar.c" />
     <ClCompile Include="..\..\..\mylib\clib\luasocket\buffer.c" />
     <ClCompile Include="..\..\..\mylib\clib\luasocket\compat.c" />
@@ -96,6 +97,7 @@
     <ClInclude Include="..\..\..\mylib\clib\lpeg\lptree.h" />
     <ClInclude Include="..\..\..\mylib\clib\lpeg\lptypes.h" />
     <ClInclude Include="..\..\..\mylib\clib\lpeg\lpvm.h" />
+    <ClInclude Include="..\..\..\mylib\clib\lua-protobuf\pb.h" />
     <ClInclude Include="..\..\..\mylib\clib\luasocket\auxiliar.h" />
     <ClInclude Include="..\..\..\mylib\clib\luasocket\buffer.h" />
     <ClInclude Include="..\..\..\mylib\clib\luasocket\compat.h" />
@@ -132,12 +134,13 @@
     <ProjectGuid>{D3A9E9A6-062D-4C26-BF35-8F18ED840D8F}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>ejoy2d</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -162,6 +165,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <TargetName>ej2d</TargetName>
+    <IncludePath>..\..\..\mylib\clib;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -181,8 +185,8 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(EJOY2D_LIB)</AdditionalLibraryDirectories>
-      <OutputFile>$(EJOY2D_ROOT)$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalDependencies>opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(EJOY2D_ROOT)$(TargetName)$(TargetExt)</OutputFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

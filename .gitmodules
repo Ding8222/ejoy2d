@@ -1,0 +1,3 @@
+[submodule "mylib/clib/lua-protobuf"]
+	path = mylib/clib/lua-protobuf
+	url = https://github.com/starwing/lua-protobuf.git

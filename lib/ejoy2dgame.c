@@ -23,11 +23,17 @@
 #include "lpeg/lpprint.h"
 #include "lpeg/lptree.h"
 #include "lpeg/lpvm.h"
+#include "lua-protobuf/pb.h"
 
 extern int luaopen_sproto_core(lua_State *L);
 extern int luaopen_lpeg(lua_State *L);
 extern int luaopen_crypt(lua_State *L);
 extern int luaopen_socket_core(lua_State *L);
+extern int luaopen_pb(lua_State *L);
+extern int luaopen_pb_io(lua_State *L);
+extern int luaopen_pb_buffer(lua_State *L);
+extern int luaopen_pb_slice(lua_State *L);
+extern int luaopen_pb_conv(lua_State *L);
 
 //#define LOGIC_FRAME 30
 
@@ -137,6 +143,11 @@ ejoy2d_init(lua_State *L) {
 	luaL_requiref(L, "lpeg", luaopen_lpeg, 0);
 	luaL_requiref(L, "crypt", luaopen_crypt, 0);
 	luaL_requiref(L, "socket.core", luaopen_socket_core, 0);
+	luaL_requiref(L, "pb", luaopen_pb, 0);
+	luaL_requiref(L, "pb.io", luaopen_pb_io, 0);
+	luaL_requiref(L, "pb.buffer", luaopen_pb_buffer, 0);
+	luaL_requiref(L, "pb.slice", luaopen_pb_slice, 0);
+	luaL_requiref(L, "pb.conv", luaopen_pb_conv, 0);
 
 	lua_settop(L,0);
 
