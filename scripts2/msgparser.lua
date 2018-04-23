@@ -69,6 +69,14 @@ function MsgParser.msgname_3_4()
 	return "PlayerMoveRet"
 end
 
+function MsgParser.msgname_3_7()
+	return "UpdataObjInfo"
+end
+
+function MsgParser.msgname_3_8()
+	return "DelObjFromView"
+end
+
 function MsgParser.encode(mainid,subid,data)
 	local funType = MsgParser["msgname_"..mainid.."_"..subid]
 	assert(type(funType) == "function")

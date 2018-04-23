@@ -6,8 +6,8 @@ local crypt = require"crypt"
 
 local send_request = logic.send_request
 
-logic.account = "Ding"
-logic.name = "Ding"
+logic.account = "Ding1"
+logic.name = "Ding1"
 
 local label
 local me

@@ -157,6 +157,8 @@ create_window(int w, int h) {
 
 int
 main(int argc, char *argv[]) {
+	SetConsoleOutputCP(65001);
+
 	register_class();
 	HWND wnd = create_window(WIDTH,HEIGHT);
 	ejoy2d_win_init(argc, argv);

@@ -5,6 +5,8 @@ local crypt = require"crypt"
 local logic
 local REQUEST = {}
 local RESPONSE = {}
+local clientkey = crypt.randomkey()
+local challenge
 
 local _handler = handler.new (REQUEST,RESPONSE)
 
@@ -16,20 +18,17 @@ _handler:release (function ()
 	logic = nil
 end)
 
-local account = "Ding"
-local clientkey = crypt.randomkey()
-local challenge
-
 function REQUEST.HandShake()
 	local HandShake = { 
 	   sClientKey = clientkey,
 	}
+	
 	logic.send_request(HandShake,2,1)
 end
 
 function REQUEST.Auth()
 	local Auth = { 
-	   Account = account,
+	   Account = logic.account,
 	   Secret = clientkey
 	}
 	logic.send_request(Auth,2,5)
@@ -45,7 +44,7 @@ end
 
 function REQUEST.CreatePlayer()
 	local CreatePlayer = { 
-	   sName = "Ding",
+	   sName = logic.name,
 	   nJob = 1,
 	   nSex = 1,
 	}
@@ -63,7 +62,7 @@ end
 
 function REQUEST.Login()
 	local Login = { 
-	   Account = account,
+	   Account = logic.account,
 	   Secret = challenge,
 	}
 	
@@ -109,6 +108,12 @@ end
 
 function RESPONSE.LoginRet(args)
 	logic.nTempID = args.nTempID
+	local PlayerMove = {
+		x = 0,
+		y = 0,
+		z = 0,
+	}
+	logic.send_request(PlayerMove,3,3)
 end
 
 return _handler
