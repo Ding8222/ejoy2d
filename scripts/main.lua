@@ -1,5 +1,4 @@
 local crypt = require"crypt"
-local test = require"mylib.lualib.test"
 local ej = require "ejoy2d"
 local fw = require "ejoy2d.framework"
 local pack = require "ejoy2d.simplepackage"
