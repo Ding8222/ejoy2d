@@ -1,7 +1,7 @@
 local pb = require "pb"
 
-assert(pb.loadfile "scripts2/pb/Login.proto.pb")
-assert(pb.loadfile "scripts2/pb/ClientMsg.proto.pb")
+assert(pb.loadfile "scripts2/pb/Login.pb")
+assert(pb.loadfile "scripts2/pb/ClientMsg.pb")
 
 local MsgParser = {}
 
