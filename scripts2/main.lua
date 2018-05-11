@@ -12,14 +12,16 @@ logic.name = "Ding"
 local label
 local me
 local other = {}
+local name = {}
 local game = {}
-local screencoord = { x = 512, y = 384, scale = 1.0 }
+local screencoord = { x = 0, y = 0, scale = 1.0 }
 
 function logic.RESPONSE.PlayerMoveRet(args)
 	if args.nTempID == logic.nTempID then
 		me:ps(args.x,args.y)
 	else
 		other[args.nTempID]:ps(args.x,args.y)
+		other[args.nTempID].label.text = string.format(name[args.nTempID].."\n"..args.nTempID.."\n[%d,%d]", math.ceil(args.x),math.ceil(args.y))
 	end
 end
 
@@ -28,14 +30,15 @@ function logic.RESPONSE.UpdataObjInfo(args)
 	if temp then
 		--对象存在
 		temp:ps(args.x,args.y)
-		temp.label.text = string.format(args.Name.."\n"..args.nTempID.."\n[%d,%d]", args.x,args.y)
+		temp.label.text = string.format(args.Name.."\n"..args.nTempID.."\n[%d,%d]", math.ceil(args.x),math.ceil(args.y))
 	else
 		--对象不存在
 		other[args.nTempID] = ej.sprite("sample","mine")
 		other[args.nTempID].resource.frame = 70
 		other[args.nTempID]:ps(args.x,args.y)
 		other[args.nTempID]:ps(1.2)
-		other[args.nTempID].label.text = string.format(args.Name.."\n"..args.nTempID.."\n[%d,%d]", args.x,args.y)
+		name[args.nTempID] = args.Name
+		other[args.nTempID].label.text = string.format(args.Name.."\n"..args.nTempID.."\n[%d,%d]", math.ceil(args.x),math.ceil(args.y))
 	end
 end
 
@@ -64,8 +67,8 @@ me:ps(-100,0,0.5)
 
 label = ej.sprite("sample","mine")
 label.resource.frame = 70
-label:ps(400,250)
-label:ps(1.2)
+label:ps(950,650)
+label:ps(1.0)
 
 
 function game.update()
@@ -101,8 +104,8 @@ end
 
 function game.touch(what, x, y)
 	if what ~= "END" then
-		label.label.text = string.format("%s\n[%d,%d]", what, (x - 512), (y - 384))
-		moveto((x - 512), (y - 384))
+		label.label.text = string.format("%s\n[%d,%d]", what, x, y)
+		moveto(x, y)
 	end
 end
 
