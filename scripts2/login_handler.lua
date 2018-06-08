@@ -39,7 +39,7 @@ function REQUEST.PlayerList()
 	
 	}
 	
-	logic.send_request(PlayerList,2,9)
+	logic.send_request(PlayerList,2,7)
 end
 
 function REQUEST.CreatePlayer()
@@ -48,8 +48,7 @@ function REQUEST.CreatePlayer()
 	   nJob = 1,
 	   nSex = 1,
 	}
-	
-	logic.send_request(CreatePlayer,2,11)
+	logic.send_request(CreatePlayer,2,9)
 end
 
 function REQUEST.SelectPlayer(guid)
@@ -57,7 +56,7 @@ function REQUEST.SelectPlayer(guid)
 	   nGuid = guid
 	}
 	
-	logic.send_request(SelectPlayer,2,13)
+	logic.send_request(SelectPlayer,2,11)
 end
 
 function REQUEST.Login()
@@ -66,7 +65,7 @@ function REQUEST.Login()
 	   Secret = challenge,
 	}
 	
-	logic.send_request(Login,2,7)
+	logic.send_request(Login,2,13)
 end
 
 ------------------------------------------------

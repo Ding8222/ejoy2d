@@ -22,35 +22,35 @@ function MsgParser.msgname_2_6()
 end
 
 function MsgParser.msgname_2_7()
-	return "Login"
-end
-
-function MsgParser.msgname_2_8()
-	return "LoginRet"
-end
-
-function MsgParser.msgname_2_9()
 	return "PlayerList"
 end
 
-function MsgParser.msgname_2_10()
+function MsgParser.msgname_2_8()
 	return "PlayerListRet"
 end
 
-function MsgParser.msgname_2_11()
+function MsgParser.msgname_2_9()
 	return "CreatePlayer"
 end
 
-function MsgParser.msgname_2_12()
+function MsgParser.msgname_2_10()
 	return "CreatePlayerRet"
 end
 
-function MsgParser.msgname_2_13()
+function MsgParser.msgname_2_11()
 	return "SelectPlayer"
 end
 
-function MsgParser.msgname_2_14()
+function MsgParser.msgname_2_12()
 	return "SelectPlayerRet"
+end
+
+function MsgParser.msgname_2_13()
+	return "Login"
+end
+
+function MsgParser.msgname_2_14()
+	return "LoginRet"
 end
 
 function MsgParser.msgname_3_2()

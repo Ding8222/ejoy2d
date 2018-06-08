@@ -10,7 +10,7 @@ local logic = {
 	tcp = nil
 }
 
-local testip = "127.0.0.1"
+local testip = "172.16.4.103"
 --local testip = "47.52.138.32"
 local loginserverip = testip
 
