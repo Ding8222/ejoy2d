@@ -1,7 +1,13 @@
 .PHONY : mingw ej2d linux undefined
 
-CFLAGS = -g -Wall -Ilib -Ilib/render -Ilua -D EJOY2D_OS=$(OS) -D FONT_EDGE_HASH
+CFLAGS = -g -Wall -Ilib -Ilib/render -Ilua -D EJOY2D_OS=$(OS) -D FONT_EDGE_HASH -Imylib/clib
 LDFLAGS :=
+
+LPEG := $(notdir $(wildcard mylib/clib/lpeg/*.c))
+LUAPROTOBUF := $(notdir $(wildcard mylib/clib/lua-protobuf/*.c))
+LUASOCKET := $(notdir $(wildcard mylib/clib/luasocket/*.c))
+SPROTO := $(notdir $(wildcard mylib/clib/sproto/*.c))
+MYCLIB := $(notdir $(wildcard mylib/clib/*.c))
 
 RENDER := \
 lib/render/render.c \
@@ -31,6 +37,7 @@ lib/lrenderbuffer.c \
 lib/lgeometry.c
 
 SRC := $(EJOY2D) $(RENDER)
+MYSRC := $(LPEG) $(LUAPROTOBUF) $(LUASOCKET) $(SPROTO) $(MYCLIB)
 
 LUASRC := \
 lua/lapi.c \
@@ -113,7 +120,7 @@ macosx : CC := clang
 macosx : OS := MACOSX
 macosx : TARGET := ej2d
 macosx : CFLAGS += -I/usr/include $(shell freetype-config --cflags) -D __MACOSX
-macosx : LDFLAGS += -lglfw3  -framework OpenGL -lfreetype -lm -ldl
+macosx : LDFLAGS += -lglfw3  -framework OpenGL -lfreetype -lm -ldl 
 macosx : SRC += mac/example/example/window.c posix/winfw.c mac/example/example/winfont.c
 
 macosx : $(SRC) ej2d
