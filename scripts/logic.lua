@@ -53,16 +53,10 @@ assert(tcp:settimeout(0))
 local session = {}
 local session_id = 0
 
-local nIndex = 0
 local function send_request(name, args)
 	session_id = session_id + 1
-	nIndex = nIndex + 1
-	if nIndex > 255 then
-		nIndex = 1
-	end
 	local str = request(name, args, session_id)
-	local size = #str + 5
-	local package = string.pack(">I2", size)..str..string.pack(">BI4", nIndex, session_id)
+	local package = string.pack(">s2", str)
 	tcp:send(package)
 	session[session_id] = {name = name ,args = args}
 end
@@ -232,7 +226,7 @@ function REQUEST.subid(args)
 	local result = args.result
 	local code = tonumber(string.sub(result, 1, 3))
 	--当确认成功的时候，断开与服务器的连接
-	assert(code == 200)
+	assert(code == 200,code)
 	tcp:close()
 
 	--通过确认信息获取subid
@@ -307,44 +301,37 @@ end
 local readpackage = unpack_f(unpack_package)
 
 local function recv_response(v)
-	local size = #v - 5
-	local content, ok, session = string.unpack("c"..tostring(size).."B>I4", v)
-	return ok ~=0 , content, session
+	local content, ok = string.unpack("c"..tostring(#v), v)
+	return ok ~=0 , content
 end
 
 function logic.dispatch_message()
 	while true do
 		local str = readpackage()
 		if str ~= nil then
-			local ok , content, sessionid = recv_response(str)
+			local ok , content = recv_response(str)
 			assert(ok)
 			local type, id, args, response = host:dispatch(content)
 			if type == "RESPONSE" then
-				assert(id == sessionid,"session err! id:"..id.." session:"..sessionid)
 				local s = assert(session[id])
 				session[id] = nil
 				local f = RESPONSE[s.name]
 				if f then
 					f (s.args, args)
 				else
-					print "response"
+					print ("RESPONSE : "..s.name)
 				end
 			elseif type == "REQUEST" then
 				local f = REQUEST[id]
 				if f then
 					local r = f(args)
-					if r and response then
+					if response then
 						local str = response(r)
-						local size = #str + 5
-						nIndex = nIndex + 1
-						if nIndex > 255 then
-							nIndex = 1
-						end
-						local package = string.pack(">I2", size)..str..string.pack(">BI4", nIndex, sessionid)
+						local package = string.pack(">s2", str)
 						tcp:send(package)
 					end
 				else
-					print "response"
+					print ("REQUEST : "..id)
 				end
 			end
 		else
